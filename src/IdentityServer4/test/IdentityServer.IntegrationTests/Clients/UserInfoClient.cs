@@ -172,7 +172,7 @@ namespace IdentityServer.IntegrationTests.Clients
             });
 
             response.IsError.Should().BeFalse();
-            
+
             var payload = GetPayload(response);
 
             var scopes = ((JArray)payload["scope"]).Select(x => x.ToString()).ToArray();
@@ -194,7 +194,7 @@ namespace IdentityServer.IntegrationTests.Clients
                 Token = response.AccessToken
             });
 
-            roles = ((JArray)userInfo.Json["role"]).Select(x => x.ToString()).ToArray();
+            roles = (userInfo.Json.TryGetStringArray("role")).Select(x => x.ToString()).ToArray();
             roles.Length.Should().Be(2);
             roles.Should().Contain("Geek");
             roles.Should().Contain("Developer");

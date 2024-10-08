@@ -21,14 +21,14 @@ namespace IdentityServer.UnitTests.ResponseHandling
 {
     public class DeviceAuthorizationResponseGeneratorTests
     {
-        private readonly List<IdentityResource> identityResources = new List<IdentityResource> {new IdentityResources.OpenId(), new IdentityResources.Profile()};
-        private readonly List<ApiResource> apiResources = new List<ApiResource> {new ApiResource("resource") {Scopes = new List<Scope> {new Scope("api1")}}};
+        private readonly List<IdentityResource> identityResources = new List<IdentityResource> { new IdentityResources.OpenId(), new IdentityResources.Profile() };
+        private readonly List<ApiResource> apiResources = new List<ApiResource> { new ApiResource("resource") { Scopes = new List<Scope> { new Scope("api1") } } };
 
         private readonly FakeUserCodeGenerator fakeUserCodeGenerator = new FakeUserCodeGenerator();
         private readonly IDeviceFlowCodeService deviceFlowCodeService = new DefaultDeviceFlowCodeService(new InMemoryDeviceFlowStore(), new StubHandleGenerationService());
         private readonly IdentityServerOptions options = new IdentityServerOptions();
         private readonly StubClock clock = new StubClock();
-        
+
         private readonly DeviceAuthorizationResponseGenerator generator;
         private readonly DeviceAuthorizationRequestValidationResult testResult;
         private const string TestBaseUrl = "http://localhost:5000/";
@@ -37,42 +37,42 @@ namespace IdentityServer.UnitTests.ResponseHandling
         {
             var resourceStore = new InMemoryResourcesStore(identityResources, apiResources);
             var scopeValidator = new ScopeValidator(resourceStore, new NullLogger<ScopeValidator>());
-            
+
             testResult = new DeviceAuthorizationRequestValidationResult(new ValidatedDeviceAuthorizationRequest
             {
-                Client = new Client {ClientId = Guid.NewGuid().ToString()},
+                Client = new Client { ClientId = Guid.NewGuid().ToString() },
                 IsOpenIdRequest = true,
                 ValidatedScopes = scopeValidator
             });
 
             generator = new DeviceAuthorizationResponseGenerator(
                 options,
-                new DefaultUserCodeService(new IUserCodeGenerator[] {new NumericUserCodeGenerator(), fakeUserCodeGenerator }),
+                new DefaultUserCodeService(new IUserCodeGenerator[] { new NumericUserCodeGenerator(), fakeUserCodeGenerator }),
                 deviceFlowCodeService,
                 clock,
                 new NullLogger<DeviceAuthorizationResponseGenerator>());
         }
 
         [Fact]
-        public void ProcessAsync_when_valiationresult_null_exect_exception()
+        public async Task ProcessAsync_when_valiationresult_null_exect_exception()
         {
             Func<Task> act = () => generator.ProcessAsync(null, TestBaseUrl);
-            act.Should().Throw<ArgumentNullException>();
+            _ = await act.Should().ThrowAsync<ArgumentNullException>();
         }
 
         [Fact]
-        public void ProcessAsync_when_valiationresult_client_null_exect_exception()
+        public async Task ProcessAsync_when_valiationresult_client_null_exect_exception()
         {
             var validationResult = new DeviceAuthorizationRequestValidationResult(new ValidatedDeviceAuthorizationRequest());
-            Func <Task> act = () => generator.ProcessAsync(validationResult, TestBaseUrl);
-            act.Should().Throw<ArgumentNullException>();
+            Func<Task> act = () => generator.ProcessAsync(validationResult, TestBaseUrl);
+            _ = await act.Should().ThrowAsync<ArgumentNullException>();
         }
 
         [Fact]
-        public void ProcessAsync_when_baseurl_null_exect_exception()
+        public async Task ProcessAsync_when_baseurl_null_exect_exception()
         {
             Func<Task> act = () => generator.ProcessAsync(testResult, null);
-            act.Should().Throw<ArgumentException>();
+            _ = await act.Should().ThrowAsync<ArgumentException>();
         }
 
         [Fact]
@@ -135,7 +135,7 @@ namespace IdentityServer.UnitTests.ResponseHandling
 
             response.DeviceCode.Should().NotBeNullOrWhiteSpace();
             response.Interval.Should().Be(options.DeviceFlow.Interval);
-            
+
             var deviceCode = await deviceFlowCodeService.FindByDeviceCodeAsync(response.DeviceCode);
             deviceCode.Should().NotBeNull();
             deviceCode.ClientId.Should().Be(testResult.ValidatedRequest.Client.ClientId);
@@ -144,7 +144,7 @@ namespace IdentityServer.UnitTests.ResponseHandling
             deviceCode.CreationTime.Should().Be(creationTime);
             deviceCode.Subject.Should().BeNull();
             deviceCode.AuthorizedScopes.Should().BeNull();
-            
+
             response.DeviceCodeLifetime.Should().Be(deviceCode.Lifetime);
         }
 

@@ -16,7 +16,7 @@ namespace IdentityServer4.EntityFramework.UnitTests.Mappers
         [Fact]
         public void AutomapperConfigurationIsValid()
         {
-            ApiResourceMappers.Mapper.ConfigurationProvider.AssertConfigurationIsValid<ApiResourceMapperProfile>();
+            ApiResourceMappers.Mapper.ConfigurationProvider.AssertConfigurationIsValid();
         }
 
         [Fact]
@@ -35,11 +35,11 @@ namespace IdentityServer4.EntityFramework.UnitTests.Mappers
         {
             var model = new ApiResource()
             {
-               Description = "description",
-               DisplayName = "displayname",
-               Name = "foo",
-               Scopes = { new Scope("foo1"), new Scope("foo2") },
-               Enabled = false
+                Description = "description",
+                DisplayName = "displayname",
+                Name = "foo",
+                Scopes = { new Scope("foo1"), new Scope("foo2") },
+                Enabled = false
             };
 
 
@@ -50,10 +50,10 @@ namespace IdentityServer4.EntityFramework.UnitTests.Mappers
             foo1.Should().NotBeNull();
             var foo2 = mappedEntity.Scopes.FirstOrDefault(x => x.Name == "foo2");
             foo2.Should().NotBeNull();
-            
+
 
             var mappedModel = mappedEntity.ToModel();
-            
+
             mappedModel.Description.Should().Be("description");
             mappedModel.DisplayName.Should().Be("displayname");
             mappedModel.Enabled.Should().BeFalse();

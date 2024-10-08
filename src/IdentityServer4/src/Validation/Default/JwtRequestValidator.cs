@@ -183,17 +183,18 @@ namespace IdentityServer4.Validation
                 {
                     var value = token.Payload[key];
 
-                    if (value is string s)
+                    if (value is string)
                     {
-                        payload.Add(key, s);
+                        payload.Add(key, value.ToString());
                     }
-                    else if (value is JObject jobj)
+                    else
                     {
-                        payload.Add(key, jobj.ToString(Formatting.None));
-                    }
-                    else if (value is JArray jarr)
-                    {
-                        payload.Add(key, jarr.ToString(Formatting.None));
+                        var valueType = value.GetType();
+                        if (valueType.Name == "JObject" || // Microsoft.IdentityModel.Json.Linq.JObject
+                            valueType.Name == "JArray")    // Microsoft.IdentityModel.Json.Linq.JArray
+                        {
+                            payload.Add(key, value.ToString());
+                        }
                     }
                 }
             }

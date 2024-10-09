@@ -11,6 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IdentityModel;
+using IdentityModel.Client;
 using IdentityServer.IntegrationTests.Common;
 using IdentityServer4;
 using IdentityServer4.Configuration;
@@ -126,9 +127,9 @@ namespace IdentityServer.IntegrationTests.Endpoints.Authorize
             handler.OutboundClaimTypeMap.Clear();
 
             var token = handler.CreateJwtSecurityToken(
-                issuer: issuer, 
-                audience: audience, 
-                signingCredentials: credential, 
+                issuer: issuer,
+                audience: audience,
+                signingCredentials: credential,
                 subject: Identity.Create("pwd", claims));
 
             return handler.WriteToken(token);

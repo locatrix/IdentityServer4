@@ -299,7 +299,7 @@ namespace IdentityServer4.ResponseHandling
 
                 entries.Add(OidcConstants.Discovery.TokenEndpointAuthenticationMethodsSupported, types);
             }
-            
+
             var signingCredentials = await Keys.GetSigningCredentialsAsync();
             if (signingCredentials != null)
             {
@@ -326,7 +326,7 @@ namespace IdentityServer4.ResponseHandling
             }
 
             // custom entries
-            if (!Options.Discovery.CustomEntries.IsNullOrEmpty())
+            if (!IEnumerableExtensions.IsNullOrEmpty(Options.Discovery.CustomEntries))
             {
                 foreach (var customEntry in Options.Discovery.CustomEntries)
                 {
@@ -359,7 +359,7 @@ namespace IdentityServer4.ResponseHandling
         public virtual async Task<IEnumerable<Models.JsonWebKey>> CreateJwkDocumentAsync()
         {
             var webKeys = new List<Models.JsonWebKey>();
-            
+
             foreach (var key in await Keys.GetValidationKeysAsync())
             {
                 if (key.Key is X509SecurityKey x509Key)

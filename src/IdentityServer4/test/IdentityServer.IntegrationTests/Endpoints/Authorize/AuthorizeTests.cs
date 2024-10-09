@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IdentityModel;
+using IdentityModel.Client;
 using IdentityServer.IntegrationTests.Common;
 using IdentityServer4;
 using IdentityServer4.Models;
@@ -1056,7 +1057,7 @@ namespace IdentityServer.IntegrationTests.Endpoints.Authorize
                 nonce: "123_nonce");
 
             Func<Task> a = () => _mockPipeline.BrowserClient.GetAsync(url);
-            a.Should().Throw<Exception>();
+            _ = await a.Should().ThrowAsync<Exception>();
         }
 
         [Fact]

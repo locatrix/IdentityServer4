@@ -33,7 +33,7 @@ namespace IdentityServer.UnitTests.Services.Default
         {
             _mockMockHttpContextAccessor = new MockHttpContextAccessor(_options, _mockUserSession, _mockEndSessionStore);
 
-            _subject = new DefaultIdentityServerInteractionService(new StubClock(), 
+            _subject = new DefaultIdentityServerInteractionService(new StubClock(),
                 _mockMockHttpContextAccessor,
                 _mockLogoutMessageStore,
                 _mockErrorMessageStore,
@@ -44,7 +44,7 @@ namespace IdentityServer.UnitTests.Services.Default
                 TestLogger.Create<DefaultIdentityServerInteractionService>()
             );
         }
-        
+
         [Fact]
         public async Task GetLogoutContextAsync_valid_session_and_logout_id_should_not_provide_signout_iframe()
         {
@@ -103,14 +103,14 @@ namespace IdentityServer.UnitTests.Services.Default
         }
 
         [Fact]
-        public void GrantConsentAsync_should_throw_if_granted_and_no_subject()
+        public async Task GrantConsentAsync_should_throw_if_granted_and_no_subject()
         {
             Func<Task> act = () => _subject.GrantConsentAsync(
-                new AuthorizationRequest(), 
-                new ConsentResponse() { ScopesConsented = new[] { "openid" } }, 
+                new AuthorizationRequest(),
+                new ConsentResponse() { ScopesConsented = new[] { "openid" } },
                 null);
 
-            act.Should().Throw<ArgumentNullException>()
+            (await act.Should().ThrowAsync<ArgumentNullException>())
                 .And.Message.Should().Contain("subject");
         }
 

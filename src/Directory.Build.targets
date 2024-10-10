@@ -10,20 +10,20 @@
 
   <ItemGroup>
     <!--build related-->
-    <PackageReference Include="MinVer" Version="4.2.0" PrivateAssets="All" />
+    <PackageReference Include="MinVer" Version="6.0.0" PrivateAssets="All" />
     <PackageReference Update="SimpleExec" Version="11.0.0" />
     <PackageReference Update="Bullseye" Version="4.2.0" />
     <PackageReference Update="McMaster.Extensions.CommandLineUtils" Version="2.4.4" />
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
 
     <!--tests -->
-    <PackageReference Update="FluentAssertions" Version="6.8.0" />
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.4.0" />
-    <PackageReference Update="xunit" Version="2.4.2" />
-    <PackageReference Update="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="All" />
+    <PackageReference Update="FluentAssertions" Version="6.12.1" />
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Update="xunit" Version="2.8.1" />
+    <PackageReference Update="xunit.runner.visualstudio" Version="2.8.2" PrivateAssets="All" />
 
     <!--our stuff -->
-    <PackageReference Update="IdentityModel" Version="4.1.1" />
+    <PackageReference Update="IdentityModel" Version="6.2.0" />
 
     <PackageReference Update="Locatrix.IdentityServer4" Version="$(IdentityServerVersion)" />
     <PackageReference Update="Locatrix.IdentityServer4.AspNetIdentity" Version="$(IdentityServerVersion)" />
@@ -32,7 +32,7 @@
     <PackageReference Update="Locatrix.IdentityServer4.EntityFramework" Version="$(IdentityServerVersion)" />
 
     <!--misc-->
-    <PackageReference Update="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Update="Newtonsoft.Json" Version="13.0.3" />
     
     <!--microsoft extensions -->
     <PackageReference Update="Microsoft.Extensions.Caching.Memory" Version="$(ExtensionsVersion)" />

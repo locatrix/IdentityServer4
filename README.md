@@ -1,3 +1,15 @@
+## Locatrix IdentityServer4
+This version is based on 3.1.4, and we maintain the following projects in the `src` folder:
+* AspNetIdentity
+* EntityFramework
+* EntityFramework.Storage
+* IdentityServer4
+* Storage
+
+The build framework SDK version is specified in the `global.json` file. Please make sure it matches the SDK version listed in your Visual Studio using `dotnet --list-sdks`.
+
+While some of the build package versions are defined in `Directory.Build.targets` to ensure consistent versioning across all solutions.
+
 ## About IdentityServer4
 [<img align="right" width="100px" src="https://dotnetfoundation.org/img/logo_big.svg" />](https://dotnetfoundation.org/projects?searchquery=IdentityServer&type=project)
 
